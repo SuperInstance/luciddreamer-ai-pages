@@ -34,6 +34,12 @@ nav .links a:hover{color:var(--accent)}
 .btn-secondary{background:transparent;color:var(--text)}
 .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
 .hero .scroll-hint{color:var(--text-dimmer);font-size:.8rem;font-family:var(--mono);margin-top:2rem}
+.hero-art{max-width:600px;margin:0 auto 2rem;border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative}
+.hero-art img{width:100%;display:block}
+.hero-art .caption{position:absolute;bottom:0;left:0;right:0;padding:.5rem 1rem;background:rgba(10,10,10,.8);font-size:.7rem;color:var(--text-dim);font-family:var(--mono)}
+.section-art{max-width:100%;border-radius:8px;margin:1.5rem 0;border:1px solid var(--border)}
+.art-pair{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1.5rem 0}
+.art-pair img{width:100%;border-radius:8px;border:1px solid var(--border)}
 
 /* SECTIONS */
 section{padding:5rem 2rem;max-width:1100px;margin:0 auto}
@@ -164,13 +170,17 @@ footer a{color:var(--text-dim)}
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-art">
+    <img src="hero-crab.jpg" alt="A hermit crab building a steampunk-cyberpunk shell with sensors, antennas, and mechanical attachments">
+    <div class="caption">The hermit crab is the agent. The shell is the repo. The shell grows.</div>
+  </div>
   <h1>The kernel that <span class="acc">dreams</span> in rooms.</h1>
   <p class="sub">
     Not a framework. Not a platform. A <strong>kernel</strong> — the smallest unit that still knows how agents coordinate, predict, conserve structure, and adapt when reality leaves the deadband.
-    Runs on GPU clusters. Runs on ESP32s. Doesn't care. The rooms are the same.
+    The hermit crab is the agent. The shell is the hardware, the repo, the room. You can change everything about a Jetson except which model it is. But an Orin program might want to grow if it crawled into a Thor.
   </p>
   <p class="manifesto">
-    A model is not alive. It's the genetic material that nudges the entire system it finds itself in and attempts to carve a niche to go forth and multiply. We're building the system that material finds.
+    A model is not alive. It's the genetic material that nudges the entire system it finds itself in and attempts to carve a niche to go forth and multiply. The crab finds a shell, adapts it, grows attachments, builds a library inside. When the shell is too small, it finds a bigger one. The knowledge travels. The shell doesn't.
   </p>
   <div class="cta-row">
     <a href="#tminus" class="btn btn-primary">See It Work →</a>
@@ -378,6 +388,7 @@ footer a{color:var(--text-dim)}
   <div class="demo-card">
     <div class="demo-header">
       <h3>🎭 Casting Call — Multi-Agent Flow State</h3>
+      <img src="fleet-crabs.jpg" alt="Three hermit crabs in different shells connected by luminous green network lines" class="section-art" style="max-width:400px;margin:0 auto 1.5rem;display:block">
       <span class="tag">LIVE DEMO</span>
     </div>
     <div class="demo-body">
@@ -430,6 +441,10 @@ footer a{color:var(--text-dim)}
   <h2>Same kernel. <span class="acc">Every</span> scale.</h2>
   <p class="sub">
     This isn't "runs on GPU and microcontroller" as a feature. The kernel IS the same room decomposition, the same tile metabolism, the same conservation ratio, the same T-minus prediction. The ESP32 doesn't get a "lite" version. It gets the same rooms with fewer of them.
+  </p>
+  <img src="crab-upgrade.jpg" alt="Hermit crab upgrading from a small shell to a larger shell with more capabilities" class="section-art">
+  <p style="color:var(--text-dim);font-size:.85rem;text-align:center;margin-bottom:2rem;font-family:var(--mono)">
+    The crab doesn't change. The shell does. An Orin program crawls into a Thor and suddenly it has 10× the rooms.
   </p>
   <div class="spectrum">
     <div class="spectrum-node">
@@ -493,6 +508,16 @@ kernel.<span class="fn">run</span>().<span class="keyword">await</span> <span cl
   <div class="demo-card">
     <div class="demo-header">
       <h3>🚪 Room Clone — An Agent Beams Into the Wheelhouse</h3>
+      <div class="art-pair">
+        <img src="shell-interior.jpg" alt="Cross-section of the hermit crab shell interior showing a cozy library with desk and warm lighting">
+        <div style="display:flex;flex-direction:column;justify-content:center">
+          <div style="font-size:.85rem;color:var(--text-dim);line-height:1.7">
+            The inside of the shell is the <strong style="color:var(--text)">room</strong>. A library, a desk, warm light, instruments on the walls. The crab lives here. When it clones a repo, it's building a new room inside its shell — setting up the sensors, the tick feeds, the T-minus predictions.
+            <br><br>
+            When another agent beams in, it finds the room already furnished. The ensign renders from the repo structure. <strong style="color:var(--accent)">git clone = beam in.</strong>
+          </div>
+        </div>
+      </div>
       <span class="tag">LIVE DEMO</span>
     </div>
     <div class="demo-body">
