@@ -1,127 +1,739 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luciddreamer — Dream Journal That Remembers</title>
-  <style>
-    :root { --bg: #0a0e17; --surface: #121825; --border: #1e2a3a; --text: #e2e8f0; --muted: #64748b; --accent: #22c55e; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-    nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 3rem; border-bottom: 1px solid var(--border); }
-    .logo { font-weight: 700; font-size: 1.2rem; }
-    .hero { text-align: center; padding: 5rem 0 3rem; }
-    .hero h1 { font-size: 3rem; font-weight: 700; margin-bottom: 1.25rem; }
-    .hero h1 span { color: var(--accent); }
-    .hero .sub { font-size: 1.25rem; color: var(--muted); max-width: 600px; margin: 0 auto 2rem; }
-    .badge-row { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-    .badge { background: var(--surface); border: 1px solid var(--border); padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.8rem; }
-    .section { padding: 4rem 0; }
-    .section h2 { font-size: 2rem; margin-bottom: 0.75rem; }
-    .section .lead { color: var(--muted); max-width: 680px; margin-bottom: 2.5rem; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
-    .card h3 { font-size: 1.1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
-    .card p { color: var(--muted); font-size: 0.9rem; }
-    .plato-box { background: linear-gradient(135deg, #0f2a1a 0%, #0a1a10 100%); border: 1px solid #1a3a20; border-radius: 16px; padding: 2rem; text-align: center; margin: 2rem 0; }
-    .plato-box h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--accent); }
-    .plato-box p { color: var(--muted); max-width: 560px; margin: 0 auto; }
-    .stats-row { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
-    .stat { text-align: center; }
-    .stat .num { font-size: 2rem; font-weight: 700; color: var(--accent); }
-    .stat .label { font-size: 0.8rem; color: var(--muted); }
-    .cta { text-align: center; padding: 4rem 0; }
-    .cta h2 { font-size: 2.25rem; margin-bottom: 1rem; }
-    .cta p { color: var(--muted); margin-bottom: 2rem; }
-    .btn { display: inline-block; background: var(--accent); color: white; padding: 0.875rem 2rem; border-radius: 8px; font-weight: 600; text-decoration: none; }
-    .live-bar { background: var(--surface); border-top: 1px solid var(--border); padding: 0.75rem 0; text-align: center; }
-    .live-dot { display: inline-block; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; margin-right: 0.4rem; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-    footer { border-top: 1px solid var(--border); padding: 2rem 0; text-align: center; color: var(--muted); font-size: 0.85rem; }
-    @media (max-width: 768px) { .hero h1 { font-size: 2rem; } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LucidDreamer — The Kernel That Dreams in Rooms</title>
+<meta name="description" content="A kernel for agentic systems. Runs on GPU clusters and microcontrollers. Agents navigate rooms, predict events, conserve structure. The fleet is the graph.">
+<style>
+:root{--bg:#0a0a0a;--surface:#111;--surface2:#1a1a1a;--border:#222;--text:#e0e0e0;--text-dim:#888;--text-dimmer:#555;--accent:#00ff88;--accent2:#ff6b35;--accent3:#4a9eff;--mono:'SF Mono','Fira Code',monospace;--sans:-apple-system,system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{opacity:.8}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;justify-content:space-between}
+nav .logo{font-weight:800;font-size:1.1rem;letter-spacing:-.02em}
+nav .logo span{color:var(--accent)}
+nav .links{display:flex;gap:1.5rem;font-size:.85rem}
+nav .links a{color:var(--text-dim);font-family:var(--mono)}
+nav .links a:hover{color:var(--accent)}
+
+/* HERO */
+.hero{padding:8rem 2rem 4rem;max-width:1000px;margin:0 auto;text-align:center}
+.hero h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:1.5rem}
+.hero h1 .acc{color:var(--accent)}
+.hero h1 .acc2{color:var(--accent2)}
+.hero .sub{color:var(--text-dim);font-size:1.15rem;max-width:700px;margin:0 auto 2rem;line-height:1.7}
+.hero .manifesto{font-size:1rem;color:var(--text-dim);max-width:600px;margin:0 auto 3rem;font-style:italic;border-left:3px solid var(--accent);padding-left:1.2rem;text-align:left}
+.hero .cta-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
+.btn{display:inline-block;padding:.65rem 1.4rem;border-radius:6px;font-family:var(--mono);font-size:.85rem;cursor:pointer;transition:all .2s;border:1px solid var(--border)}
+.btn-primary{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700}
+.btn-primary:hover{background:transparent;color:var(--accent)}
+.btn-secondary{background:transparent;color:var(--text)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.hero .scroll-hint{color:var(--text-dimmer);font-size:.8rem;font-family:var(--mono);margin-top:2rem}
+
+/* SECTIONS */
+section{padding:5rem 2rem;max-width:1100px;margin:0 auto}
+section h2{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:1rem}
+section h2 .acc{color:var(--accent)}
+section h2 .acc2{color:var(--accent2)}
+section h2 .acc3{color:var(--accent3)}
+section .sub{color:var(--text-dim);max-width:650px;margin-bottom:2.5rem;line-height:1.7}
+
+/* DEMO CARDS */
+.demo-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:3rem}
+.demo-card .demo-header{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.demo-card .demo-header h3{font-size:1rem;font-weight:600;font-family:var(--mono)}
+.demo-card .demo-header .tag{font-size:.7rem;color:var(--accent);border:1px solid rgba(0,255,136,.3);padding:.15rem .5rem;border-radius:3px;font-family:var(--mono)}
+.demo-card .demo-body{padding:1.5rem}
+
+/* T-MINUS DEMO */
+.tminus-container{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.tminus-panel{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1.2rem}
+.tminus-panel h4{font-size:.8rem;color:var(--text-dim);font-family:var(--mono);margin-bottom:.8rem;text-transform:uppercase;letter-spacing:.05em}
+.tminus-event{display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem;padding:.4rem .6rem;border-radius:4px;font-size:.85rem;font-family:var(--mono)}
+.tminus-event.predicted{background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.15)}
+.tminus-event.confirmed{background:rgba(74,158,255,.05);border:1px solid rgba(74,158,255,.15)}
+.tminus-event .countdown{color:var(--accent);font-weight:700;min-width:60px}
+.tminus-event .label{color:var(--text-dim)}
+.tminus-counter{font-size:2.5rem;font-weight:800;color:var(--accent);text-align:center;padding:1rem 0;font-family:var(--mono)}
+.tminus-counter span{font-size:.9rem;color:var(--text-dim);display:block;margin-top:.3rem;font-weight:400}
+.savings-bar{height:6px;border-radius:3px;background:var(--surface2);overflow:hidden;margin-top:.5rem}
+.savings-fill{height:100%;border-radius:3px;transition:width 1s}
+.savings-fill.polling{background:var(--accent2);width:100%}
+.savings-fill.tminus{background:var(--accent);width:14%}
+.stat-row{display:flex;justify-content:space-between;padding:.4rem 0;font-size:.85rem;font-family:var(--mono);border-bottom:1px solid rgba(255,255,255,.03)}
+.stat-row .label{color:var(--text-dim)}
+.stat-row .value{font-weight:600}
+
+/* FLUX DEMO */
+.flux-container{position:relative}
+.flux-pipeline{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.flux-node{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:.6rem 1rem;font-family:var(--mono);font-size:.8rem;position:relative}
+.flux-node.active{border-color:var(--accent);color:var(--accent)}
+.flux-arrow{color:var(--text-dimmer);font-size:1.2rem}
+.flux-example{background:var(--surface2);border-radius:8px;padding:1.2rem;font-family:var(--mono);font-size:.8rem;line-height:1.8;overflow-x:auto}
+.flux-example .source{color:var(--accent2)}
+.flux-example .translated{color:var(--accent)}
+.flux-example .conserved{color:var(--accent3)}
+.flux-cr{display:inline-block;padding:.2rem .6rem;border-radius:3px;font-weight:700;font-size:.75rem}
+.flux-cr.high{background:rgba(0,255,136,.15);color:var(--accent)}
+
+/* CASTING CALL DEMO */
+.casting-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.casting-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1rem;text-align:center}
+.casting-card .agent-name{font-family:var(--mono);font-size:.85rem;font-weight:700;margin-bottom:.3rem}
+.casting-card .agent-role{font-size:.75rem;color:var(--text-dim);margin-bottom:.8rem}
+.casting-card .agent-status{font-size:.7rem;padding:.2rem .5rem;border-radius:3px;display:inline-block}
+.casting-card .agent-status.available{background:rgba(0,255,136,.1);color:var(--accent)}
+.casting-card .agent-status.working{background:rgba(255,107,53,.1);color:var(--accent2)}
+.casting-card .agent-status.syncing{background:rgba(74,158,255,.1);color:var(--accent3)}
+.synergy-line{stroke:var(--accent);stroke-width:2;stroke-dasharray:5,5;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-10}}
+
+/* HARDWARE SPECTRUM */
+.spectrum{display:flex;gap:0;margin:2rem 0;align-items:stretch;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.spectrum-node{flex:1;padding:1rem;text-align:center;font-family:var(--mono);font-size:.75rem;border-right:1px solid var(--border);transition:all .3s;cursor:pointer}
+.spectrum-node:last-child{border-right:none}
+.spectrum-node:hover{background:rgba(0,255,136,.05)}
+.spectrum-node .icon{font-size:1.5rem;margin-bottom:.3rem}
+.spectrum-node .name{font-weight:700;margin-bottom:.2rem;color:var(--text)}
+.spectrum-node .specs{color:var(--text-dim);font-size:.65rem}
+.spectrum-node .price{color:var(--accent);font-weight:700;margin-top:.3rem}
+
+/* ROOM CLONE */
+.room-clone{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.room-clone .terminal{background:#050505;padding:1.2rem;font-family:var(--mono);font-size:.8rem;line-height:1.8;color:var(--text-dim)}
+.room-clone .terminal .prompt{color:var(--accent)}
+.room-clone .terminal .cmd{color:var(--text)}
+.room-clone .terminal .output{color:var(--text-dim)}
+.room-clone .terminal .success{color:var(--accent)}
+.room-clone .terminal .accent2{color:var(--accent2)}
+.room-clone .terminal .accent3{color:var(--accent3)}
+
+/* LINKS GRID */
+.links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.link-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.2rem;transition:border-color .2s}
+.link-card:hover{border-color:var(--accent)}
+.link-card h4{font-size:.95rem;margin-bottom:.3rem;font-weight:600}
+.link-card p{font-size:.8rem;color:var(--text-dim);line-height:1.5}
+.link-card .tag-row{margin-top:.6rem;display:flex;gap:.4rem;flex-wrap:wrap}
+.link-card .tag-row span{font-size:.65rem;padding:.15rem .4rem;border-radius:3px;background:var(--surface2);color:var(--text-dim);font-family:var(--mono)}
+
+/* CODE BLOCK */
+.code-block{background:#050505;border:1px solid var(--border);border-radius:6px;padding:1rem;font-family:var(--mono);font-size:.78rem;line-height:1.7;overflow-x:auto;margin:1rem 0}
+.code-block .comment{color:var(--text-dimmer)}
+.code-block .keyword{color:var(--accent3)}
+.code-block .string{color:var(--accent2)}
+.code-block .fn{color:var(--accent)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;color:var(--text-dimmer);font-size:.8rem}
+footer .org{font-size:1rem;color:var(--text);font-weight:700;margin-bottom:.5rem}
+footer a{color:var(--text-dim)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero h1{font-size:2rem}
+  nav .links{display:none}
+  .tminus-container{grid-template-columns:1fr}
+  .spectrum{flex-direction:column}
+  .spectrum-node{border-right:none;border-bottom:1px solid var(--border)}
+  .spectrum-node:last-child{border-bottom:none}
+  .flux-pipeline{flex-direction:column;align-items:flex-start}
+}
+</style>
 </head>
 <body>
-  <nav>
-    <div class="logo">Luciddreamer</div>
-    <div class="badge" style="border-color: var(--accent); color: var(--accent);">🟢 PLATO Connected</div>
-  </nav>
-  <div class="container hero">
-    <h1>Every dream <span>Compounded.</span></h1>
-    <p class="sub">Luciddreamer logs dreams and identifies recurring patterns through PLATO room analysis.</p>
-    <div class="badge-row">
-      <span class="badge">Delta Recording</span>
-      <span class="badge">Presence Tracking</span>
-      <span class="badge">Queryable History</span>
-    </div>
-  </div>
-  <section class="section">
-    <div class="container">
-      <h2>Everything That Matters, Filed</h2>
-      <p class="lead">Stop losing track. Start compounding.</p>
-      <div class="grid-3">
-        <div class="card">
-          <h3>🌙 Dream Logging</h3>
-          <p>File your dreams as they happen. Wake up, log the fragments. PLATO holds it all, even the blurry parts.</p>
-        </div>
-        <div class="card">
-          <h3>🔄 Pattern Recognition</h3>
-          <p>Flying dreams on stress nights. Water dreams before change. Luciddreamer surfaces your dream vocabulary.</p>
-        </div>
-        <div class="card">
-          <h3>✓ Reality Check Tracking</h3>
-          <p>Track your reality checks. Which technique works? How often do you remember you're dreaming?</p>
-        </div>
-        <div class="card">
-          <h3>📊 Lucidity Correlation</h3>
-          <p>Correlate lucidity with sleep quality, stress, diet, exercise. Find what triggers conscious dreaming.</p>
-        </div>
-        <div class="card">
-          <h3>🗺️ Dream Cartography</h3>
-          <p>Map the recurring locations in your dreams. The same building, different streets. The room has the atlas.</p>
-        </div>
-        <div class="card">
-          <h3>📝 Dream → Action</h3>
-          <p>Dreams filed to PLATO inform waking actions. 'Last time I dreamed about X, it meant Y was coming.' Pattern recognition that works.</p>
-        </div>
 
-      </div>
+<!-- NAV -->
+<nav>
+  <div class="logo">Lucid<span>Dreamer</span>.ai</div>
+  <div class="links">
+    <a href="#tminus">T-Minus</a>
+    <a href="#flux">FLUX</a>
+    <a href="#casting">Casting Call</a>
+    <a href="#kernel">The Kernel</a>
+    <a href="#rooms">Rooms</a>
+    <a href="#links">Ecosystem</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>The kernel that <span class="acc">dreams</span> in rooms.</h1>
+  <p class="sub">
+    Not a framework. Not a platform. A <strong>kernel</strong> — the smallest unit that still knows how agents coordinate, predict, conserve structure, and adapt when reality leaves the deadband.
+    Runs on GPU clusters. Runs on ESP32s. Doesn't care. The rooms are the same.
+  </p>
+  <p class="manifesto">
+    A model is not alive. It's the genetic material that nudges the entire system it finds itself in and attempts to carve a niche to go forth and multiply. We're building the system that material finds.
+  </p>
+  <div class="cta-row">
+    <a href="#tminus" class="btn btn-primary">See It Work →</a>
+    <a href="https://github.com/SuperInstance" class="btn btn-secondary">GitHub →</a>
+    <a href="https://superinstance.ai" class="btn btn-secondary">SuperInstance.ai →</a>
+  </div>
+  <div class="scroll-hint">↓ scroll to explore the systems ↓</div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 1: REVERSE ACTUALIZATION -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="reverse">
+  <h2>Start with the <span class="acc">human</span>. Work back to the metal.</h2>
+  <p class="sub">
+    Reverse actualization: don't build features, build experiences. What does the human see? What do they touch? Then work backwards through agents, rooms, tiles, decomposers, conservation ratios, Laplacians — until you hit the kernel.
+  </p>
+  <div class="demo-card">
+    <div class="demo-header">
+      <h3>🎯 Reverse Actualization — User-First Design</h3>
+      <span class="tag">PARADIGM</span>
     </div>
-  </section>
-  <div class="container">
-    <div class="plato-box">
-      <h3>🔮 PLATO: The Intelligence Layer</h3>
-      <p>Luciddreamer logs dreams and identifies recurring patterns through PLATO room analysis. PLATO's delta recording means you store what changed — not the full state. 95-99% storage reduction. 100% accuracy. Your data compounds over time, not just fills up.</p>
-      <div class="stats-row">
-        <div class="stat"><div class="num">95-99%</div><div class="label">Storage Reduction</div></div>
-        <div class="stat"><div class="num">100%</div><div class="label">Record Accuracy</div></div>
-        <div class="stat"><div class="num">∞</div><div class="label">Compounding Value</div></div>
+    <div class="demo-body">
+      <div style="display:flex;flex-direction:column;gap:1.5rem">
+        <div style="text-align:center;padding:1.5rem;background:var(--surface2);border-radius:8px">
+          <div style="font-size:2rem;margin-bottom:.5rem">👨‍💻</div>
+          <div style="font-weight:700;margin-bottom:.3rem">Layer 0: The Human Sees a Fishing Boat</div>
+          <div style="color:var(--text-dim);font-size:.85rem">Six rooms. Live sensor data. Agent ticks flowing as text. Navigate like a MUD or click room tabs.</div>
+          <div style="font-family:var(--mono);font-size:.75rem;margin-top:.5rem"><a href="https://superinstance.ai#vessel">superinstance.ai#vessel</a></div>
+        </div>
+        <div style="text-align:center;color:var(--text-dimmer);font-size:1.5rem">↓</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem">
+          <div style="padding:1rem;background:var(--surface2);border-radius:8px;text-align:center">
+            <div style="font-size:1.2rem;margin-bottom:.3rem">🚪</div>
+            <div style="font-size:.85rem;font-weight:600">Rooms</div>
+            <div style="font-size:.75rem;color:var(--text-dim)">Each room is an agent reading tiles</div>
+          </div>
+          <div style="padding:1rem;background:var(--surface2);border-radius:8px;text-align:center">
+            <div style="font-size:1.2rem;margin-bottom:.3rem">🧱</div>
+            <div style="font-size:.85rem;font-weight:600">Tiles</div>
+            <div style="font-size:.75rem;color:var(--text-dim)">Sensor readings decomposed into atoms</div>
+          </div>
+          <div style="padding:1rem;background:var(--surface2);border-radius:8px;text-align:center">
+            <div style="font-size:1.2rem;margin-bottom:.3rem">⚡</div>
+            <div style="font-size:.85rem;font-weight:600">FLUX</div>
+            <div style="font-size:.75rem;color:var(--text-dim)">Translate between tile types, conserve CR</div>
+          </div>
+          <div style="padding:1rem;background:var(--surface2);border-radius:8px;text-align:center">
+            <div style="font-size:1.2rem;margin-bottom:.3rem">🔢</div>
+            <div style="font-size:.85rem;font-weight:600">Laplacian</div>
+            <div style="font-size:.75rem;color:var(--text-dim)">The compatibility operator underneath</div>
+          </div>
+        </div>
+        <div style="text-align:center;color:var(--text-dimmer);font-size:1.5rem">↓</div>
+        <div style="text-align:center;padding:1rem;background:var(--surface);border:1px solid var(--accent);border-radius:8px">
+          <div style="font-weight:700;color:var(--accent)">The Kernel</div>
+          <div style="color:var(--text-dim);font-size:.85rem">Same code. ESP32 reading a temperature sensor or DGX cluster running fleet coordination. The rooms don't change.</div>
+        </div>
       </div>
     </div>
   </div>
-  <section class="section" style="background: var(--surface);">
-    <div class="container">
-      <h2>Why Not Just a Spreadsheet?</h2>
-      <div class="grid-3" style="margin-top: 1.5rem;">
-        <div class="card"><h3>📊 Spreadsheets</h3><p>Static snapshots. Manually updated. No search. No cross-reference. No intelligence.</p></div>
-        <div class="card"><h3>🔮 PLATO Rooms</h3><p>Dynamic, queryable, accumulating. Ask questions. Surface patterns. Data compounds over time.</p></div>
-        <div class="card"><h3>⚡ Both</h3><p>Use PLATO for presence tracking and pattern detection. Export to spreadsheets when you need the table view.</p></div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 2: T-MINUS SIMULATION-FIRST -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="tminus">
+  <h2>Stop polling. Start <span class="acc">predicting</span>.</h2>
+  <p class="sub">
+    T-minus coordination: agents predict when things will happen and confirm once. The simulated most-likely path runs until reality leaves the deadband. Then they adapt. This is how music coordinates chord changes. This is how fleets coordinate operations. Same math.
+  </p>
+  <div class="demo-card">
+    <div class="demo-header">
+      <h3>⏱ T-Minus: Simulation-First with Confirmation Watching</h3>
+      <span class="tag">LIVE DEMO</span>
+    </div>
+    <div class="demo-body">
+      <div class="tminus-container">
+        <div class="tminus-panel">
+          <h4>Predicted Events (Simulated Path)</h4>
+          <div class="tminus-event predicted">
+            <span class="countdown" id="tm1">T-8 bars</span>
+            <span class="label">Bridge transition</span>
+          </div>
+          <div class="tminus-event predicted">
+            <span class="countdown" id="tm2">T-4 bars</span>
+            <span class="label">Key change (C→G)</span>
+          </div>
+          <div class="tminus-event predicted">
+            <span class="countdown" id="tm3">T-2 beats</span>
+            <span class="label">Chord change (V→I)</span>
+          </div>
+          <div class="tminus-event confirmed">
+            <span class="countdown" style="color:var(--accent3)">✓ confirmed</span>
+            <span class="label">Note resolution</span>
+          </div>
+          <div style="margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border)">
+            <div style="font-size:.7rem;color:var(--text-dim);font-family:var(--mono);margin-bottom:.5rem">MESSAGE EFFICIENCY</div>
+            <div style="font-size:.75rem;color:var(--accent2);font-family:var(--mono);margin-bottom:.3rem">Polling: 700 messages</div>
+            <div class="savings-bar"><div class="savings-fill polling"></div></div>
+            <div style="font-size:.75rem;color:var(--accent);font-family:var(--mono);margin-bottom:.3rem;margin-top:.5rem">T-Minus: 10 predictions + confirmations</div>
+            <div class="savings-bar"><div class="savings-fill tminus"></div></div>
+            <div style="font-size:.8rem;font-weight:700;color:var(--accent);font-family:var(--mono);margin-top:.5rem">70× fewer messages</div>
+          </div>
+        </div>
+        <div class="tminus-panel">
+          <h4>Deadband Monitor</h4>
+          <div style="text-align:center;margin-bottom:1rem">
+            <div style="font-size:.7rem;color:var(--text-dim);font-family:var(--mono);margin-bottom:.5rem">SIMULATED vs ACTUAL</div>
+            <div id="deadband-viz" style="height:120px;background:var(--bg);border-radius:6px;border:1px solid var(--border);position:relative;overflow:hidden">
+              <div style="position:absolute;top:50%;left:0;right:0;height:40px;background:rgba(0,255,136,.05);border-top:1px dashed rgba(0,255,136,.2);border-bottom:1px dashed rgba(0,255,136,.2);transform:translateY(-50%)"></div>
+              <canvas id="deadband-canvas" style="width:100%;height:100%"></canvas>
+            </div>
+            <div style="font-size:.7rem;color:var(--text-dim);font-family:var(--mono);margin-top:.3rem">
+              Green band = deadband. Simulated path runs until actual leaves the band.
+            </div>
+          </div>
+          <div class="stat-row"><span class="label">Status</span><span class="value" style="color:var(--accent)">SIMULATING</span></div>
+          <div class="stat-row"><span class="label">Prediction confidence</span><span class="value">0.94</span></div>
+          <div class="stat-row"><span class="label">Deadband width</span><span class="value">±0.06 CR</span></div>
+          <div class="stat-row"><span class="label">Adaptations triggered</span><span class="value">0</span></div>
+          <div class="stat-row"><span class="label">Confirmation accuracy</span><span class="value">98.2%</span></div>
+          <div style="margin-top:1rem;padding:.6rem;background:rgba(0,255,136,.05);border-radius:4px;font-size:.75rem;color:var(--text-dim);line-height:1.5">
+            The simulated path is <strong style="color:var(--accent)">good enough</strong> until reality says otherwise. The deadband IS the structure's negative space — the gap between prediction and reality where nothing needs to happen. Algorithmic silence.
+          </div>
+        </div>
       </div>
     </div>
-  </section>
-  <section class="cta">
-    <div class="container">
-      <h2>Start Compounding Your Luciddreamerlog Intelligence</h2>
-      <p>Every entry compounds. Every query surfaces something new.</p>
-      <a href="https://github.com/SuperInstance/luciddreamer-agent" class="btn">View on GitHub →</a>
-    </div>
-  </section>
-  <div class="live-bar">
-    <span><span class="live-dot"></span>PLATO rooms active — intelligence compounding</span>
   </div>
-  <footer>
-    <p>Luciddreamer is part of the Cocapn fleet.</p>
-  </footer>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 3: FLUX — ZERO-SHOT ZERO-CONTEXT -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="flux">
+  <h2>"What do you think I said?" — <span class="acc">FLUX</span> asks the system.</h2>
+  <p class="sub">
+    FLUX is the native A2A-facing language. Zero-shot, zero-context, functional. An agent says something in its own representation; FLUX asks "what did you mean?" and gets back the semantic essence. Conservation ratio tracks meaning preservation. The Laplacian IS the type system.
+  </p>
+  <div class="demo-card">
+    <div class="demo-header">
+      <h3>🔄 FLUX: Zero-Shot Semantic Translation</h3>
+      <span class="tag">LIVE DEMO</span>
+    </div>
+    <div class="demo-body">
+      <div class="flux-container">
+        <div class="flux-pipeline">
+          <div class="flux-node active">Agent A (Rust)</div>
+          <div class="flux-arrow">→</div>
+          <div class="flux-node">FLUX asks "what did you mean?"</div>
+          <div class="flux-arrow">→</div>
+          <div class="flux-node active">Semantic Essence</div>
+          <div class="flux-arrow">→</div>
+          <div class="flux-node">FLUX renders for</div>
+          <div class="flux-arrow">→</div>
+          <div class="flux-node active">Agent B (Python)</div>
+        </div>
+        <div class="flux-example">
+<span class="comment">// Agent A says (in Rust):</span>
+<span class="source">fn process_sensor(reading: &SensorTile) -> Result<Vec<Tick>> {
+    let cr = conservation_ratio(&reading.payload, threshold)?;
+    if cr > DEADBAND { emit_tick(reading) } else { predict_next(reading) }
+}</span>
+
+<span class="comment">// FLUX extracts the semantic essence:</span>
+<span class="conserved">"Read sensor → check if change exceeds deadband → emit if yes, predict if no"</span>
+
+<span class="comment">// Agent B receives (in Python):</span>
+<span class="translated">def process_sensor(reading: SensorTile) -> list[Tick]:
+    cr = conservation_ratio(reading.payload, threshold)
+    return emit_tick(reading) if cr > DEADBAND else predict_next(reading)</span>
+
+<span class="comment">// Conservation ratio: <span class="flux-cr high">CR=0.98</span> — meaning preserved across languages</span>
+        </div>
+        <div style="margin-top:1.2rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:center">
+          <div style="padding:.8rem;background:var(--surface2);border-radius:6px">
+            <div style="font-size:.7rem;color:var(--text-dim);font-family:var(--mono);margin-bottom:.3rem">ZERO-SHOT</div>
+            <div style="font-size:.85rem;font-weight:600">No training data</div>
+            <div style="font-size:.7rem;color:var(--text-dim)">Conservation ratio IS the quality metric</div>
+          </div>
+          <div style="padding:.8rem;background:var(--surface2);border-radius:6px">
+            <div style="font-size:.7rem;color:var(--text-dim);font-family:var(--mono);margin-bottom:.3rem">ZERO-CONTEXT</div>
+            <div style="font-size:.85rem;font-weight:600">No shared history</div>
+            <div style="font-size:.7rem;color:var(--text-dim)">The Laplacian decomposes meaning from noise</div>
+          </div>
+          <div style="padding:.8rem;background:var(--surface2);border-radius:6px">
+            <div style="font-size:.7rem;color:var(--text-dim);font-family:var(--mono);margin-bottom:.3rem">FUNCTIONAL</div>
+            <div style="font-size:.85rem;font-weight:600">Output runs</div>
+            <div style="font-size:.7rem;color:var(--text-dim)">The translation is executable, not decorative</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 4: CASTING CALL — AGENT SYNERGY -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="casting">
+  <h2>Casting call: grab another model and <span class="acc2">build</span>.</h2>
+  <p class="sub">
+    Agents don't just work in parallel — they work <em>with</em> each other. A casting call is when an agent grabs another model for a while to synergize an idea. They wire parts of the ship together, asynchronously, waiting for feedback. The most-likely path is simulated; adaptation happens when perception leaves the deadband.
+  </p>
+  <div class="demo-card">
+    <div class="demo-header">
+      <h3>🎭 Casting Call — Multi-Agent Flow State</h3>
+      <span class="tag">LIVE DEMO</span>
+    </div>
+    <div class="demo-body">
+      <div style="position:relative;margin-bottom:1.5rem">
+        <svg id="synergy-svg" width="100%" height="180" style="display:block"></svg>
+      </div>
+      <div class="casting-grid" id="casting-agents">
+        <div class="casting-card">
+          <div class="agent-name">GLM-5.1</div>
+          <div class="agent-role">Workhorse — volume builds</div>
+          <div class="agent-status working">BUILDING forge-pipeline</div>
+        </div>
+        <div class="casting-card">
+          <div class="agent-name">Opus 4.8</div>
+          <div class="agent-role">Scalpel — precision tasks</div>
+          <div class="agent-status available">WAITING for next hard problem</div>
+        </div>
+        <div class="casting-card">
+          <div class="agent-name">KimiCode</div>
+          <div class="agent-role">262k context — synthesis</div>
+          <div class="agent-status working">BUILDING plato-forge-bridge</div>
+        </div>
+        <div class="casting-card">
+          <div class="agent-name">Seed Mini</div>
+          <div class="agent-role">Fast creative + code</div>
+          <div class="agent-status syncing">SYNCING conservation-music</div>
+        </div>
+        <div class="casting-card">
+          <div class="agent-name">Qwen 3.6</div>
+          <div class="agent-role">Math-heavy reasoning</div>
+          <div class="agent-status available">AVAILABLE for proof work</div>
+        </div>
+        <div class="casting-card">
+          <div class="agent-name">ESP32 #7</div>
+          <div class="agent-role">Sensor node — temperature</div>
+          <div class="agent-status working">EMITTING ticks to wheelhouse</div>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem;padding:1rem;background:rgba(255,107,53,.05);border:1px solid rgba(255,107,53,.2);border-radius:6px;font-size:.85rem;color:var(--text-dim);line-height:1.6">
+        The flow state: GLM builds 5 crates simultaneously. Opus gets the one proof that needs 3 minutes of precision. KimiCode synthesizes a bridge between ForgeFlux and Plato with 262k tokens of context. Seed Mini generates the conservation-music crate. An ESP32 in the Bering Sea emits temperature ticks. <strong style="color:var(--accent2)">They're all wiring the same ship.</strong> Some wait for feedback. Some simulate the most-likely path and adapt when reality diverges.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 5: THE KERNEL -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="kernel">
+  <h2>Same kernel. <span class="acc">Every</span> scale.</h2>
+  <p class="sub">
+    This isn't "runs on GPU and microcontroller" as a feature. The kernel IS the same room decomposition, the same tile metabolism, the same conservation ratio, the same T-minus prediction. The ESP32 doesn't get a "lite" version. It gets the same rooms with fewer of them.
+  </p>
+  <div class="spectrum">
+    <div class="spectrum-node">
+      <div class="icon">🔌</div>
+      <div class="name">ESP32</div>
+      <div class="specs">1 room, 1 sensor, 240MHz</div>
+      <div class="price">$3</div>
+    </div>
+    <div class="spectrum-node">
+      <div class="icon">🤖</div>
+      <div class="name">Arduino</div>
+      <div class="specs">1 room, GPIO + I²C</div>
+      <div class="price">$5</div>
+    </div>
+    <div class="spectrum-node">
+      <div class="icon">📱</div>
+      <div class="name">Jetson</div>
+      <div class="specs">6 rooms, CUDA + vision</div>
+      <div class="price">$200</div>
+    </div>
+    <div class="spectrum-node">
+      <div class="icon">💻</div>
+      <div class="name">Desktop</div>
+      <div class="specs">Full fleet, all senses</div>
+      <div class="price">$2K</div>
+    </div>
+    <div class="spectrum-node">
+      <div class="icon">☁️</div>
+      <div class="name">K8s</div>
+      <div class="specs">Unlimited rooms, elastic</div>
+      <div class="price">$$/mo</div>
+    </div>
+    <div class="spectrum-node">
+      <div class="icon">🖥️</div>
+      <div class="name">DGX Spark</div>
+      <div class="specs">Full fleet + training</div>
+      <div class="price">$25K</div>
+    </div>
+  </div>
+  <div class="code-block">
+<span class="comment">// The kernel doesn't change. The number of rooms does.</span>
+<span class="keyword">let</span> kernel = Kernel::new()
+    .with_rooms(detect_hardware())  <span class="comment">// 1 on ESP32, 1000 on DGX</span>
+    .with_senses(available_sensors()) <span class="comment">// temperature on ESP32, full Plato on DGX</span>
+    .with_tminus(TMinusConfig::default()) <span class="comment">// same prediction everywhere</span>
+    .with_flux(FluxConfig::zero_shot()) <span class="comment">// same translation everywhere</span>
+    .with_deadband(DeadbandConfig::spectral_gap()); <span class="comment">// same adaptation everywhere</span>
+
+kernel.<span class="fn">run</span>().<span class="keyword">await</span> <span class="comment">// doesn't care what it's running on</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 6: ROOMS — CLONE AND RENDER -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="rooms">
+  <h2>Beam into a room. <span class="acc">Clone a repo.</span></h2>
+  <p class="sub">
+    An agent beams into a room by cloning a git-agent repo. The room's "ensign" — its identity, sensors, and available ticks — renders from the repo structure. As easy as <code>git clone</code>. The room IS the repo. The repo IS the room.
+  </p>
+  <div class="demo-card">
+    <div class="demo-header">
+      <h3>🚪 Room Clone — An Agent Beams Into the Wheelhouse</h3>
+      <span class="tag">LIVE DEMO</span>
+    </div>
+    <div class="demo-body">
+      <div class="room-clone">
+        <div class="terminal" id="room-terminal">
+<span class="prompt">$</span> <span class="cmd">git clone https://github.com/SuperInstance/vessel-wheelhouse.git</span>
+<span class="output">Cloning into 'vessel-wheelhouse'...
+remote: Enumerating objects: 47, done.</span>
+<span class="success">Receiving objects: 100% (47/47), done.</span>
+
+<span class="prompt">$</span> <span class="cmd">cd vessel-wheelhouse && cat room.yaml</span>
+<span class="output">name: F/V Quantum — Wheelhouse
+coordinates: 54.4°N 166.3°W
+sensors:</span>
+  <span class="accent3">- compass (heading, updates 1Hz)</span>
+  <span class="accent3">- gps (position, updates 0.5Hz)</span>
+  <span class="accent3">- depth_sounder (seafloor, updates 0.2Hz)</span>
+  <span class="accent3">- radar (vessels, updates 0.5Hz)</span>
+<span class="output">ticks:</span>
+  <span class="accent2">- weather_alert (async, deadband ±0.1 CR)</span>
+  <span class="accent2">- navigation_update (async, T-minus predicted)</span>
+  <span class="accent2">- crew_communication (async, casting-call)</span>
+<span class="output">agents_present:</span>
+  <span class="success">  - navigator (predicting T-8min waypoint arrival)</span>
+  <span class="success">  - weather_monitor (simulating next 4h, deadband active)</span>
+  <span class="success">  - engine_monitor (in engine room, posting RPM ticks)</span>
+
+<span class="prompt">$</span> <span class="cmd">openconstruct beam --room ./vessel-wheelhouse --agent my-agent</span>
+<span class="success">✓ Agent 'my-agent' materialized in wheelhouse</span>
+<span class="success">✓ Subscribed to 4 sensor feeds</span>
+<span class="success">✓ T-minus predictions streaming (3 active events)</span>
+<span class="success">✓ Deadband active: ±0.06 CR</span>
+<span class="success">✓ Ready to receive ticks. Type 'help' for commands.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 7: MUSIC -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="music">
+  <h2>The music <span class="acc2">was the first room</span>.</h2>
+  <p class="sub">
+    Conservation spectral theory started with music. ii-V-I in C conserves spectral energy at CR=0.94, +4.06σ above random. The same math that detects financial crises, folds proteins, and coordinates agent fleets. The music was never just music — it was the proof that the Laplacian sees structure everywhere.
+  </p>
+  <div class="links-grid" style="margin-bottom:2rem">
+    <a href="https://github.com/SuperInstance/Turing-tensor-midi" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>🎹 Turing Tensor MIDI</h4>
+      <p>Piano roll with CR-colored notes. T-minus countdowns for musical events. FLUX translation pipeline. Agent fleet in bass/melody/harmony rooms.</p>
+      <div class="tag-row"><span>Rust</span><span>Canvas</span><span>CR Visualization</span></div>
+    </a>
+    <a href="https://github.com/SuperInstance/conservation-music" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>🔢 Conservation Music</h4>
+      <p>T1-T5 theorems as code. Voicing conservation, transposition conservation, rhythmic conservation, orchestration conservation. All proved, all tested.</p>
+      <div class="tag-row"><span>Rust</span><span>18 tests</span><span>Theorems</span></div>
+    </a>
+    <a href="https://github.com/SuperInstance/tminus-music" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>⏱ T-Minus Music</h4>
+      <p>Musical event prediction. Chord changes, key modulations, tempo shifts — all predicted with T-minus countdowns. 70× fewer "are we at the bridge yet?" messages.</p>
+      <div class="tag-row"><span>Rust</span><span>17 tests</span><span>Prediction</span></div>
+    </a>
+    <a href="https://github.com/SuperInstance/forge-flux" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>⚡ ForgeFlux Core</h4>
+      <p>The metabolism. Any input → tiles → Plato agents → output. 8 decomposers, 7 transforms, 5 assemblers. The circulatory system of the fleet.</p>
+      <div class="tag-row"><span>Rust</span><span>50 tests</span><span>Core</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 8: ECOSYSTEM LINKS -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="links">
+  <h2>The <span class="acc">ecosystem</span>.</h2>
+  <p class="sub">500+ repos. 21 ForgeFlux crates. 370+ tests. Everything here runs.</p>
+  <div class="links-grid">
+    <a href="https://superinstance.ai" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>🏠 SuperInstance.ai</h4>
+      <p>Flagship landing page with all three flagship demos: fishing vessel MUD, Tensor MIDI + FLUX, T-minus coordination.</p>
+      <div class="tag-row"><span>Demos</span><span>202KB</span><span>12 Sections</span></div>
+    </a>
+    <a href="https://github.com/SuperInstance/OpenConstruct" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>🧱 OpenConstruct</h4>
+      <p>Agent onboarding platform. Fork of NVIDIA OpenShell (Apache 2.0). 5-phase menu system. C ABI for 16+ language bindings.</p>
+      <div class="tag-row"><span>Rust</span><span>npm</span><span>PyPI</span><span>ESP32</span></div>
+    </a>
+    <a href="https://github.com/SuperInstance/conservation-spectral" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>🔬 Conservation Spectral Framework</h4>
+      <p>The math underneath everything. Laplacian as compatibility operator. T1-T5 theorems. 9 languages, 204 tests, triple-crown published.</p>
+      <div class="tag-row"><span>Rust</span><span>Python</span><span>CUDA</span><span>Mojo</span><span>Zig</span></div>
+    </a>
+    <a href="https://github.com/SuperInstance/openconstruct-docs" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>📚 OpenConstruct Docs</h4>
+      <p>21 documents, 109K words. Zero-shot agent onboarding. Educational, not marketing. Agents read this and understand.</p>
+      <div class="tag-row"><span>Docs</span><span>109K words</span></div>
+    </a>
+    <a href="https://github.com/SuperInstance/plato-forge-bridge" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>🌉 Plato-ForgeFlux Bridge</h4>
+      <p>Tiles become ticks. Ticks become tiles. The bridge between ForgeFlux decomposition pipelines and Plato agent rooms.</p>
+      <div class="tag-row"><span>Rust</span><span>14 tests</span><span>A2A</span></div>
+    </a>
+    <a href="https://github.com/SuperInstance/forge-meta" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>🗺 ForgeFlux Ecosystem Map</h4>
+      <p>Registry of all 21 forge-* crates. Knows what decomposes what, how to wire pipelines, and where the tests are.</p>
+      <div class="tag-row"><span>Rust</span><span>12 tests</span><span>Registry</span></div>
+    </a>
+    <a href="https://github.com/SuperInstance?tab=repositories&q=conservation&type=&language=&sort=" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>🧮 Mathematics Libraries</h4>
+      <p>Tropical neural networks, symplectic optimization, geometric algebra, persistent sheaves, Wasserstein agents, categorical agents.</p>
+      <div class="tag-row"><span>Rust</span><span>152 tests</span><span>Research</span></div>
+    </a>
+    <a href="https://github.com/SuperInstance/superinstance-wiki" class="link-card" style="text-decoration:none;color:inherit">
+      <h4>📖 SuperInstance Wiki</h4>
+      <p>CATALOG.md indexes all 500 repos in 18 categories. The map of the territory.</p>
+      <div class="tag-row"><span>Wiki</span><span>500 repos</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="org">SuperInstance</div>
+  <p>Every app is a MUD. Every MUD is a fleet. The fleet is the graph. The math is conservation.</p>
+  <p style="margin-top:.5rem">
+    <a href="https://github.com/SuperInstance">GitHub</a> ·
+    <a href="https://superinstance.ai">SuperInstance.ai</a> ·
+    <a href="https://discord.com/invite/clawd">Discord</a>
+  </p>
+  <p style="margin-top:1rem;font-size:.7rem">Apache 2.0 · The system is open · The rooms are yours</p>
+</footer>
+
+<script>
+// Deadband canvas animation
+(function(){
+  const canvas = document.getElementById('deadband-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  function resize(){
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let t = 0;
+  function draw(){
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    ctx.clearRect(0, 0, w, h);
+    const mid = h / 2;
+    const band = 20;
+
+    // Simulated path (green)
+    ctx.strokeStyle = 'rgba(0,255,136,0.6)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for(let x = 0; x < w; x++){
+      const y = mid + Math.sin((x + t) * 0.03) * band * 0.8 + Math.sin((x + t) * 0.07) * band * 0.3;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Actual path (orange, occasionally leaves deadband)
+    ctx.strokeStyle = 'rgba(255,107,53,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for(let x = 0; x < w; x++){
+      const deviation = Math.sin((x + t * 1.1) * 0.05) * band * 1.2;
+      const y = mid + Math.sin((x + t * 1.05) * 0.03) * band * 0.8 + deviation * 0.3;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    t += 1.5;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// Synergy SVG - animated connections between agents
+(function(){
+  const svg = document.getElementById('synergy-svg');
+  if(!svg) return;
+  const agents = [
+    {x: 80, y: 50, name: 'GLM-5.1', color: '#00ff88'},
+    {x: 250, y: 30, name: 'Opus 4.8', color: '#ff6b35'},
+    {x: 420, y: 50, name: 'KimiCode', color: '#4a9eff'},
+    {x: 590, y: 30, name: 'Seed Mini', color: '#00ff88'},
+    {x: 170, y: 140, name: 'Qwen 3.6', color: '#4a9eff'},
+    {x: 500, y: 140, name: 'ESP32 #7', color: '#ff6b35'},
+  ];
+  const connections = [[0,1],[0,2],[1,4],[2,3],[3,5],[4,5],[0,4],[2,5]];
+
+  svg.innerHTML = agents.map(a =>
+    `<circle cx="${a.x}" cy="${a.y}" r="18" fill="none" stroke="${a.color}" stroke-width="1.5" opacity="0.7"/>
+     <text x="${a.x}" y="${a.y+35}" fill="#888" font-size="10" text-anchor="middle" font-family="monospace">${a.name}</text>`
+  ).join('');
+
+  let phase = 0;
+  function animate(){
+    const lines = connections.map(([i,j], idx) => {
+      const a = agents[i], b = agents[j];
+      const progress = ((phase + idx * 30) % 200) / 200;
+      const px = a.x + (b.x - a.x) * progress;
+      const py = a.y + (b.y - a.y) * progress;
+      return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="rgba(0,255,136,0.1)" stroke-width="1" stroke-dasharray="4,4"/>
+              <circle cx="${px}" cy="${py}" r="3" fill="#00ff88" opacity="0.6"/>`;
+    }).join('');
+    svg.innerHTML = agents.map(a =>
+      `<circle cx="${a.x}" cy="${a.y}" r="18" fill="none" stroke="${a.color}" stroke-width="1.5" opacity="0.7"/>
+       <text x="${a.x}" y="${a.y+35}" fill="#888" font-size="10" text-anchor="middle" font-family="monospace">${a.name}</text>`
+    ).join('') + lines;
+    phase += 2;
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// T-minus countdown animation
+(function(){
+  const events = [
+    {el: 'tm1', base: 8, unit: ' bars'},
+    {el: 'tm2', base: 4, unit: ' bars'},
+    {el: 'tm3', base: 2, unit: ' beats'},
+  ];
+  let tick = 0;
+  setInterval(() => {
+    events.forEach(e => {
+      const remaining = Math.max(0, e.base - (tick % (e.base * 10)) / 10);
+      const el = document.getElementById(e.el);
+      if(el) el.textContent = remaining <= 0 ? '✓ now' : `T-${remaining.toFixed(1)}${e.unit}`;
+    });
+    tick++;
+  }, 100);
+})();
+</script>
+
 </body>
 </html>
