@@ -1,0 +1,97 @@
+/* luciddreamer.ai — deep indigo night, moonlight silver, italic serif. */
+.le-root {
+  --le-bg: #0a0f26;
+  --le-ink: #e6e9f7;
+  --le-muted: #8b93b8;
+  --le-accent: #dfe6ff;
+  --le-card: #121a3a;
+  --le-line: #2a3560;
+  --le-go: #9fe8c1;
+  --le-hold: #e8d89f;
+  --le-nogo: #e89fb4;
+  --le-font: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --le-mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+/* starfield: layers of radial-gradient pinpricks on a fixed veil */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1px 1px at 8% 12%, #ffffff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 22% 68%, #cdd6ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 35% 28%, #ffffff 50%, transparent 51%),
+    radial-gradient(1px 1px at 47% 82%, #aebbe8 50%, transparent 51%),
+    radial-gradient(2px 2px at 58% 15%, #eef1ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 66% 44%, #ffffff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 74% 74%, #cdd6ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 82% 30%, #ffffff 50%, transparent 51%),
+    radial-gradient(1px 1px at 91% 58%, #aebbe8 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 15% 48%, #ffffff 50%, transparent 51%),
+    radial-gradient(1px 1px at 28% 88%, #cdd6ff 50%, transparent 51%),
+    radial-gradient(2px 2px at 93% 10%, #f4f6ff 50%, transparent 51%);
+  opacity: .8;
+}
+.le-root { position: relative; z-index: 1; }
+
+/* a soft moon-glow behind the wordmark */
+.le-wordmark {
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: .04em;
+  text-shadow: 0 0 26px rgba(223, 230, 255, .55), 0 0 80px rgba(160, 175, 255, .3);
+}
+.le-tagline {
+  font-style: italic;
+  letter-spacing: .12em;
+  color: var(--le-muted);
+}
+.le-decision, .le-h1 {
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.le-label {
+  font-style: italic;
+  letter-spacing: .18em;
+  text-transform: lowercase;
+  color: var(--le-muted);
+}
+.le-card, .sk-reading {
+  background: rgba(18, 26, 58, .72);
+  backdrop-filter: blur(2px);
+  border: 1px solid var(--le-line);
+  border-radius: 1rem;
+  box-shadow: 0 18px 60px rgba(4, 7, 24, .55), inset 0 1px 0 rgba(223, 230, 255, .08);
+}
+.le-verdict-value { font-style: italic; letter-spacing: .06em; }
+.le-btn {
+  font-family: var(--le-font);
+  font-style: italic;
+  background: transparent;
+  border: 1px solid var(--le-accent);
+  color: var(--le-accent);
+}
+.le-btn:hover { background: rgba(223, 230, 255, .08); }
+
+/* the reading — one lyrical line, recomputed as the field moves */
+.sk-reading {
+  padding: 2rem 2.2rem;
+  margin-top: 1.5rem;
+}
+.sk-reading p {
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  margin: .6rem 0 0;
+  max-width: 34em;
+}
+.sk-reading p b { font-weight: 600; color: var(--le-accent); }
+
+/* dream symbols get moonlight labels */
+.le-factor-label { font-style: italic; font-size: 1.05rem; }
+
+.le-banner { background: #05081a; border-bottom: 1px solid var(--le-line); }
